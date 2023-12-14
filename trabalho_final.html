@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <title>Tradutor</title>
+</head>
+
+<body>
+
+    <!--framework-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+
+    <!--estilo css-->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Roboto:wght@100;300;400;500;700;900&family=Source+Sans+Pro:wght@200;300;400;600;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins';
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #1a1a1a;
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            margin: 5px;
+        }
+
+        h1 {
+            color: white;
+            letter-spacing: 1px;
+            font-family: "monaco" monospace;
+            font-style: normal;
+        }
+
+        .content {
+            padding: 15px;
+            box-shadow: 0 1px 2px;
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .divSelects {
+            display: flex;
+        }
+
+        select {
+            width: 60%;
+            padding: 10px;
+            cursor: pointer;
+            outline: none;
+            font-size: 18px;
+            border-color: #ddd;
+            border-radius: 10px;
+            background-color: #f2f2f2;
+        }
+
+        .divTextareas {
+            display: flex;
+            border-radius: 5px;
+        }
+
+        textarea {
+            border-color: #ddd;
+            outline: none;
+            padding: 5px;
+            font-size: 18px;
+            width: 50%;
+            border-radius: 10px;
+            resize: none;
+            background-color: #f2f2f2;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 18px;
+            border: none;
+            background-color: #595959;
+            color: white;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            letter-spacing: 1px;
+        }
+    </style>
+
+    <!--esqueleto da página-->
+    <div class="container">
+        <h1>TRADUTOR</h1>
+        <div class="content">
+            <div class="divSelects">
+                <select class="selectFrom"></select>
+                <select class="selectTo"></select>
+            </div>
+            <div class="divTextareas">
+                <textarea id="textareaFrom" rows="8" placeholder="Digitar texto"></textarea>
+                <textarea id="textareaTo" rows="8" placeholder="Tradução" disabled></textarea>
+            </div>
+            <button id="btnTranslate">TRADUZIR</button>
+        </div>
+    </div>
+
+    <!--java script-->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const textareaFrom = document.querySelector("#textareaFrom");
+            const textareaTo = document.querySelector("#textareaTo");
+            const btnTranslate = document.querySelector("#btnTranslate");
+            const selects = document.querySelectorAll("select");
+
+            const countries = {
+                "ar-SA": "Árabe",
+                "bg-BG": "Búlgaro",
+                "cs-CZ": "Tcheco",
+                "da-DK": "Dinamarquês",
+                "de-DE": "Alemão",
+                "el-GR": "Grego",
+                "en-GB": "Inglês",
+                "es-ES": "Espanhol",
+                "fi-FI": "Finlandês",
+                "fr-FR": "Francês",
+                "hi-IN": "Hindi",
+                "hr-HR": "Croata",
+                "id-ID": "Indonésio",
+                "it-IT": "Italiano",
+                "ja-JP": "Japonês",
+                "ko-KR": "Coreano",
+                "lt-LT": "Lituano",
+                "lv-LV": "Letão",
+                "ms-MY": "Malaio",
+                "nl-NL": "Holandês",
+                "no-NO": "Norueguês",
+                "pl-PL": "Polonês",
+                "pt-BR": "Português",
+                "ro-RO": "Romeno",
+                "ru-RU": "Russo",
+                "sk-SK": "Eslovaco",
+                "sl-SI": "Esloveno",
+                "sv-SE": "Sueco",
+                "th-TH": "Tailandês",
+                "tr-TR": "Turco",
+                "vi-VN": "Vietnamita",
+                "zh-CN": "Chinês (Simplificado)"
+            };
+
+            selects.forEach((tag) => {
+                for (let country in countries) {
+                    let selected;
+                    if (tag.className.includes("selectFrom") && country == "pt-BR") {
+                        selected = "selected";
+                    } else if (tag.className.includes("selectTo") && country == "en-GB") {
+                        selected = "selected";
+                    }
+
+                    const option = `<option value="${country}" ${selected}>${countries[country]}</option>`;
+
+                    tag.insertAdjacentHTML("beforeend", option);
+                }
+            });
+
+            btnTranslate.addEventListener("click", () => {
+                if (textareaFrom.value) {
+                    loadTranslation();
+                } else {
+                    textareaTo.value = "";
+                }
+            });
+
+            async function loadTranslation() {
+                try {
+                    const response = await fetch(
+                        `https://api.mymemory.translated.net/get?q=${textareaFrom.value}&langpair=${selects[0].value}|${selects[1].value}`
+                    );
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    textareaTo.value = data.responseData.translatedText;
+                } catch (error) {
+                    console.error("Error fetching translation:", error);
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
